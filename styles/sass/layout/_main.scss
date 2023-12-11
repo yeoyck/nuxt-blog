@@ -1,0 +1,26 @@
+* {
+  box-sizing: border-box;
+}
+html {
+  height: 100%;
+  font-size: $scale;
+}
+
+body {
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
+  font-variant-ligatures: discretionary-ligatures;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.layout-container {
+  min-height: 100vh;
+  .layout-container-wrapper {
+    position: relative;
+    z-index: 1;
+    overflow-x: hidden;
+    min-height: 100%;
+  }
+}

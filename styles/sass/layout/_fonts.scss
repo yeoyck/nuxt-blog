@@ -1,0 +1,28 @@
+
+@font-face {
+  font-family: 'Cascadia Code';
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local(''),
+    url('@/styles/sass/layout/fonts/CascadiaCode/CaskaydiaCoveNerdFontMono-Regular') format('ttf');
+}
+
+@font-face {
+  font-family: 'Cascadia Code';
+  font-style: normal;
+  font-weight: 500;
+  src:
+    local(''),
+    url('@/styles/sass/layout/fonts/CascadiaCode/CaskaydiaCoveNerdFontMono-SemiBold') format('ttf');
+}
+
+@font-face {
+  font-family: 'Cascadia Code';
+  font-style: normal;
+  font-weight: 600;
+  src:
+    local(''),
+    url('@/styles/sass/layout/fonts/CascadiaCode/CaskaydiaCoveNerdFontMono-Bold') format('ttf');
+} 
+
