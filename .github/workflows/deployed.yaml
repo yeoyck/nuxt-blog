@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app-artifacts
-          path: ${{ github.sha }}.tar.gz
+          path: ${{ github.sha }}.tar.gz .output
       - uses: actions/download-artifact@v3
         with:
           name: app-artifacts
