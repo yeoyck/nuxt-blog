@@ -22,7 +22,7 @@ jobs:
           username: 'root'
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script: whoami
+          script: cat README
   # test-application:
   #   runs-on: ubuntu-latest
   #   steps:
