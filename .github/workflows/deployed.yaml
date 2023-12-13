@@ -10,7 +10,8 @@ env:
   IP_ADDRESS: 'theakar.link'
 
 jobs:
-  test-application:
+  build:
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
