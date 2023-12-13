@@ -23,7 +23,7 @@ jobs:
         run: |
           bun install
           bun build:live
-          tar -czf ${{ github.sha }}.tar.gz .
+          tar -czf ${{ github.sha }}.tar.gz
       - name: Store app-artifacts for distribution
         uses: actions/upload-artifact@v3
         with:
