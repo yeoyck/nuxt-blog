@@ -18,9 +18,7 @@ export default defineNuxtConfig({
       }
     }
   },
-  css: [
-    'xterm/css/xterm.css'
-  ],
+  css: ['xterm/css/xterm.css'],
   routeRules: {
     '/*': { ssr: false }
   }

@@ -1,18 +1,17 @@
 <template>
-  <div ref="root"></div>
+  <div id="root" ref="root"></div>
 </template>
 
 <script setup lang="ts">
 import { Terminal, type ITheme } from 'xterm'
 import { FitAddon } from '@xterm/addon-fit'
-// import { LigaturesAddon } from '@xterm/addon-ligatures'
 import StdOut from '@/os/stdout'
 import Shell from '@/os/shell'
 import Filesystem from '~/os/filesystem'
-import { Folder, File } from '~/os/filesystem'
-const props = defineProps<{ welcome: string; theme: ITheme; apps: Record<string, Function> }>()
-
+import type { ICommand } from '~/os/commands/command'
+const props = defineProps<{ welcome: string; theme: ITheme; filesystem: Filesystem; apps: ICommand[] }>()
 const root = ref<HTMLDivElement>()
+
 const terminal = new Terminal({
   fontFamily: 'Cascadia Code',
   fontWeight: '300',
@@ -22,45 +21,54 @@ const terminal = new Terminal({
   theme: props.theme
 })
 const fitAddon = new FitAddon()
-
+useResizeObserver(root, () => {
+  fitAddon.fit()
+})
 const stdout = new StdOut(terminal)
-const filesystem: Filesystem = new Filesystem([
-  new Folder('home', [new Folder('user', [new File('cheekin', 'yeoyck@outlook.com')]), new Folder('root', [])]),
-  new Folder('bin', []),
-  new Folder('lib', []),
-  new File('README', 'It works!')
-])
-
+const filesystem: Filesystem = props.filesystem
 const shell = new Shell(terminal, filesystem, stdout, props.apps)
-
+// watch(
+//   () => height.value,
+//   (height) => {
+//     fitAddon.fit()
+//     const dimension = fitAddon.proposeDimensions()
+//     if (dimension) {
+//       console.log({ rows: dimension.rows })
+//       terminal.resize(dimension.cols, Math.floor(height / (12 + 2)))
+//     }
+//   }
+// )
 onMounted(() => {
   terminal.open(root.value!)
-  // const ligaturesAddon = new LigaturesAddon()
-  // terminal.loadAddon(ligaturesAddon)
   terminal.loadAddon(fitAddon)
   fitAddon.fit()
 
   stdout.print('')
-  // stdout.print(props.welcome.replace(/\n/g, '\n\r'))
   stdout.print(props.welcome)
   stdout.print('')
   shell.user = 'guest'
   shell.domain = 'theakar.link'
-  shell.run()
+  shell.run('help')
 })
 </script>
 
 <style lang="scss">
+#root {
+  height: 100dvh;
+  width: 100dvw;
+}
 // bug for fullscreen
-.xterm-viewport {
-  height: 100vh;
-}
-.xterm-viewport::-webkit-scrollbar {
+.xterm *::-webkit-scrollbar {
   display: none;
+  position: relative;
 }
-/* Hide scrollbar for IE, Edge and Firefox */
+.xterm * {
+  scrollbar-width: none;
+}
+.terminal.xterm {
+  height: 100%;
+}
 .xterm-viewport {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  height: 100% !important;
 }
 </style>

@@ -1,0 +1,21 @@
+name: Automated Release Deployment
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: 20
+  IP_ADDRESS: 'theakar.link'
+
+jobs:
+  prebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prebuild
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install
+      - run: bun typecheck
+      - run: bun lint:fix
