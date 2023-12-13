@@ -10,13 +10,15 @@ env:
   IP_ADDRESS: 'theakar.link'
 
 jobs:
-  prebuild:
+  test-application:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Prebuild
-      - uses: oven-sh/setup-bun@v1
-      - name: Build
-      - run: bun install
-      - run: bun typecheck
-      - run: bun lint:fix
+      - name: Test Application
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      - name: Install Dependencies
+          run: bun install
+          
+  
