@@ -23,7 +23,15 @@ jobs:
         run: |
           bun install
           bun build:live
-          tar -czf theakar-nuxt.tar.gz .output
+          tar -czf ${{ github.sha }}.tar.gz .
+      - name: Store app-artifacts for distribution
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-artifacts
+          path: ${{ github.sha }}.tar.gz
+      - uses: actions/download-artifact@v3
+        with:
+          name: app-artifacts
       - name: Upload app-artifacts
         uses: appleboy/scp-action@master
         with:
