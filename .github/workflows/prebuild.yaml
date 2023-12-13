@@ -57,7 +57,7 @@ jobs:
           target: ~/server/artifacts
   activate-release:
     environment: production
-    needs: create-artifacts
+    needs: prepare-release
     name: Active Release
     runs-on: ubuntu-latest
     steps:
