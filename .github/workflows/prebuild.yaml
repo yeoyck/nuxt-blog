@@ -10,6 +10,51 @@ env:
   IP_ADDRESS: 'theakar.link'
 
 jobs:
+  test-application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test Application
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      - name: Install Dependencies
+        run: bun install
+  create-artifacts:
+    needs: test-application
+    runs-on: unbuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build App Artifacts
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      - run: |
+          bun install
+          bun build:live
+          tar -czf theakar-nuxt.tar.gz .output
+      - name: Store app-artifacts for distribution
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-artifacts
+          path: theakar-nuxt.tar.gz
+  prepare-release:
+    environment: production
+    needs: create-artifacts
+    name: 'Prepare release on Server'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: app-artifacts
+      - name: Upload app-artifacts
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ env.IP_ADDRESS }}
+          port: '222'
+          username: 'root'
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          target: ~/server/artifacts
   activate-release:
     environment: production
     name: Active Release
@@ -22,49 +67,4 @@ jobs:
           username: 'root'
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script: cat README
-  # test-application:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Test Application
-  #       uses: oven-sh/setup-bun@v1
-  #       with:
-  #         bun-version: latest
-  #     - name: Install Dependencies
-  #       run: bun install
-  # create-artifacts:
-  #   needs: test-application
-  #   runs-on: unbuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Build App Artifacts
-  #       uses: oven-sh/setup-bun@v1
-  #       with:
-  #         bun-version: latest
-  #       - run: |
-  #         bun install
-  #         bun build:live
-  #         tar -czf theakar-nuxt.tar.gz .output
-  #       - name: Store app-artifacts for distribution
-  #         uses: actions/upload-artifact@v3
-  #         with:
-  #           name: app-artifacts
-  #           path: theakar-nuxt.tar.gz
-  # prepare-release:
-  #   environment: production
-  #   needs: create-artifacts
-  #   name: "Prepare release on Server"
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/download-artifact@v3
-  #       with:
-  #         name: app-artifacts
-  #     - name: Upload app-artifacts
-  #       uses: appleboy/scp-action@master
-  #       with:
-  #         host: ${{ env.IP_ADDRESS }}
-  #         port: '222'
-  #         username: 'root'
-  #         key: ${{ env.SSH_PRIVATE_KEY }}
-  #         target: ~/server/artifacts
+          script: ls ~/server/artifacts
