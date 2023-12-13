@@ -39,6 +39,7 @@ jobs:
           port: '222'
           username: 'root'
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: ${{ github.sha }}.tar.gz
           target: ~/server/artifacts
       - name: Activate Release
         uses: appleboy/ssh-action@master
