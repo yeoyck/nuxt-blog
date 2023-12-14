@@ -54,9 +54,7 @@ jobs:
           script: |
             mkdir -p "~/server/releases/${{ github.sha }}"
             tar xzf ~/server/artifacts/${{ github.sha }}.tar.gz -C "~/server/releases/${{ github.sha }}"
-            rm -rf ~/server/artifacts/${{ github.sha }}.tar.gz
-            ln -s -n -f ${{ env.RELEASE_PATH }} ${{ env.ACTIVE_RELEASE_PATH }}
-            chown -R www-data:www-data ${{ env.RELEASE_PATH }}
+
       - uses: geekyeggo/delete-artifact@v1
         with:
           name: app-artifacts
