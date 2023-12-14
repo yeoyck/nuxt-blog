@@ -54,7 +54,6 @@ jobs:
           script: |
             mkdir -p "~/server/releases/${GITHUB_SHA}"
             tar xzf ~/server/artifacts/${GITHUB_SHA}.tar.gz -C "~/server/releases/${GITHUB_SHA}"
-            tar xzf ~/server/artifacts/${GITHUB_SHA}-database.tar.gz -C "~/server"
             rm -rf ~/server/artifacts/${GITHUB_SHA}.tar.gz
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             systemctl restart yck.nuxtblog.service
