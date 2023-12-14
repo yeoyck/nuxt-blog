@@ -43,9 +43,23 @@ jobs:
           target: ~/server/artifacts
       - name: Activate Release
         uses: appleboy/ssh-action@master
+        env:
+          RELEASE_PATH: ~/server/releases/${{ github.sha }}
+          ACTIVE_RELEASE_PATH: ~/server/live
         with:
           host: ${{ env.IP_ADDRESS }}
           username: 'root'
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script: ls ~/server/artifacts
+          script: |
+            mkdir -p "~/server/releases/${GITHUB_SHA}"
+            tar xzf ~/server/artifacts/${GITHUB_SHA}.tar.gz -C "~/server/releases/${GITHUB_SHA}"
+            tar xzf ~/server/artifacts/${GITHUB_SHA}-database.tar.gz -C "~/server"
+            rm -rf ~/server/artifacts/${GITHUB_SHA}.tar.gz
+            ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
+            systemctl restart yck.nuxtblog.service
+            cd ~/server/releases && ls -t -1 | tail -n +4 | xargs rm -rf
+            cd ~/server/artifacts && rm -rf *
+      - uses: geekyeggo/delete-artifact@v1
+        with:
+          name: app-artifacts
