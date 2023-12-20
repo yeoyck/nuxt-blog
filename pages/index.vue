@@ -11,6 +11,15 @@ import Filesystem, { Folder, File } from '~/os/filesystem'
 import Color from '~/os/utils/color'
 const bannerText = `
 The Akar (TA) Not A Corporation. All akars reverved.\n
+                              　　　 　　／＞　　フ
+                              　　　 　　| 　　 l    
+    ___    __ __ ___    ____  　 　　 　／ ミ＿xノ
+   /   |  / //_//   |  / __ \ 　　 　 /　　　 　 | 
+  / /| | / ,<  / /| | / /_/ / 　　　 /　 ヽ　　 ﾉ
+ / ___ |/ /| |/ ___ |/ _, _/  　 　 │　　|　|　|
+/_/  |_/_/ |_/_/  |_/_/ |_|   　／￣|　　 | | |
+                              　| (￣ヽ＿ヽ)__)
+                              　＼二つ
 use "help" to see the available commands
 `
 const theme: ITheme = {
