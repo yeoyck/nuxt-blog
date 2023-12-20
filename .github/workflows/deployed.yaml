@@ -57,6 +57,7 @@ jobs:
             rm -rf ~/server/artifacts/${{ github.sha }}.tar.gz
             ln -s -n -f ${{ env.RELEASE_PATH }} ${{ env.ACTIVE_RELEASE_PATH }}
             chown -R www-data:www-data ${{ env.RELEASE_PATH }}
+            systemctl restart yck.nuxtblogweb.service
       - uses: geekyeggo/delete-artifact@v1
         with:
           name: app-artifacts
